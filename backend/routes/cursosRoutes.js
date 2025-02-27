@@ -6,8 +6,8 @@ const router = express.Router();
 const dbConfig = {
   host: 'localhost',
   user: 'root',
-  password: '',
-  database: 'calendario-cursos',
+  password: '123',
+  database: 'calendario',
   waitForConnections: true,
   connectionLimit: 10,  // Número de conexões simultâneas permitidas
   queueLimit: 0
@@ -19,7 +19,7 @@ const pool = mysql.createPool(dbConfig);
 router.get('/', async (req, res) => {
   try {
     const connection = await pool.getConnection();
-    const [results] = await connection.execute('SELECT * FROM cursos');
+    const [results] = await connection.execute('SELECT * FROM tabela_exemplo');
     connection.release();
     res.json(results);
   } catch (err) {

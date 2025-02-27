@@ -13,8 +13,8 @@ const PORT = process.env.PORT || 3000;
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'calendario-cursos'
+    password: '123',
+    database: 'calendario'
 });
 
 // Conectar ao banco antes de iniciar o servidor
@@ -51,3 +51,5 @@ db.connect((err) => {
         });
     }
 });
+
+
