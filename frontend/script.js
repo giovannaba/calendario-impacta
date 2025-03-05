@@ -4,11 +4,6 @@ const filterUnit = document.getElementById('filterUnit');
 const tableBody = document.getElementById('courseTable');
 let courses = []; // Armazena os cursos carregados
 
-// Função para formatar a data para o formato dia/mês/ano
-function formatDate(date) {
-    const [year, month, day] = date.split('-');
-    return `${day}/${month}/${year}`;
-}
 
 // Função para carregar os cursos na tabela
 async function loadCourses() {
@@ -21,18 +16,6 @@ async function loadCourses() {
     } catch (error) {
         console.error('Erro ao carregar cursos:', error);
     }
-}
-
-// Função para preencher o filtro de unidade com opções únicas
-function populateUnitFilter() {
-    const units = [...new Set(courses.map(course => course.descricao))]; // Ajustado para usar a coluna correta
-    filterUnit.innerHTML = '<option value="">Filtrar por Descrição</option>';
-    units.forEach(unit => {
-        const option = document.createElement('option');
-        option.value = unit;
-        option.textContent = unit;
-        filterUnit.appendChild(option);
-    });
 }
 
 // Função para exibir os cursos na tabela
@@ -52,16 +35,34 @@ function displayCourses(filteredCourses) {
     });
 }
 
-// Barra de pesquisa
+// Função para preencher o filtro de unidade com opções únicas
+function populateUnitFilter() {
+    const units = [...new Set(courses.map(course => course.unidade))]; // Ajuste: se a coluna for "descricao", troque para course.descricao
+    filterUnit.innerHTML = '<option value="">Filtrar por Unidade</option>';
+    
+    units.forEach(unit => {
+        if (unit) { // Evita adicionar valores nulos ao filtro
+            const option = document.createElement('option');
+            option.value = unit;
+            option.textContent = unit;
+            filterUnit.appendChild(option);
+        }
+    });
+}
+
+// Função para filtrar os cursos pela barra de pesquisa e pelo filtro de unidade
 function filterCourses() {
     const searchText = searchInput.value.toLowerCase();
     const selectedUnit = filterUnit.value;
 
     const filtered = courses.filter(course => {
-        const matchesSearch = course.id.toString().includes(searchText) ||
-                              course.nome.toLowerCase().includes(searchText) || 
-                              course.descricao.toLowerCase().includes(searchText);
-        const matchesUnit = selectedUnit === '' || course.descricao === selectedUnit;
+        const matchesSearch = 
+            (course.codigo && course.codigo.toString().includes(searchText)) ||
+            (course.sigla && course.sigla.toLowerCase().includes(searchText)) ||
+            (course.nome && course.nome.toLowerCase().includes(searchText)) ||
+            (course.unidade && course.unidade.toLowerCase().includes(searchText));
+
+        const matchesUnit = selectedUnit === '' || course.unidade === selectedUnit;
 
         return matchesSearch && matchesUnit;
     });
