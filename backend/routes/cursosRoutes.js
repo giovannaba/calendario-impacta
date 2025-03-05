@@ -19,7 +19,7 @@ const pool = mysql.createPool(dbConfig);
 router.get('/', async (req, res) => {
   try {
     const connection = await pool.getConnection();
-    const [results] = await connection.execute('SELECT * FROM tabela_exemplo');
+    const [results] = await connection.execute('SELECT * FROM cursos');
     connection.release();
     res.json(results);
   } catch (err) {
