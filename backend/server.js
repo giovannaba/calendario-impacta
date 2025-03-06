@@ -1,8 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const morgan = require('morgan');
-const helmet = require('helmet');
 const cursosRoutes = require('./routes/cursosRoutes');
 const mysql = require('mysql2');
 
@@ -28,8 +26,6 @@ db.connect((err) => {
         // Middlewares
         app.use(cors({ origin: '*' }));
         app.use(bodyParser.json());
-        app.use(helmet()); // Segurança
-        app.use(morgan('dev')); // Logging
 
         // Middleware para tratamento de erros
         app.use((err, req, res, next) => {

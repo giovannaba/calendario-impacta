@@ -1,0 +1,51 @@
+/* Container para limitar a altura da tabela e adicionar rolagem */
+.table-container {
+    max-height: 400px; /* Define uma altura máxima */
+    overflow-y: auto;  /* Adiciona rolagem vertical se necessário */
+    overflow-x: auto;  /* Permite rolagem horizontal para telas pequenas */
+    border: 1px solid #ddd; /* Borda para destacar o container */
+    border-radius: 8px; /* Borda arredondada para um design moderno */
+    padding: 10px;
+    background-color: #fff; /* Fundo branco para destaque */
+}
+
+/* Ajustes na tabela para manter cabeçalhos fixos */
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Remove espaçamentos entre as células */
+}
+
+/* Estiliza os cabeçalhos para se destacarem */
+.table thead {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; /* Fundo levemente acinzentado */
+    z-index: 10;
+}
+
+/* Adiciona um pequeno espaçamento entre as células */
+.table th, .table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Mantém as células com largura mínima */
+.table th {
+    white-space: nowrap; /* Impede que o texto quebre */
+}
+
+/* Torna a rolagem mais fluida */
+.table-container::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
