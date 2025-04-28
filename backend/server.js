@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cursosRoutes = require('./routes/cursosRoutes');
 const mysql = require('mysql2');
+const path = require('path'); // Para manipulação de caminhos de arquivos
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,15 +27,48 @@ db.connect((err) => {
         // Middlewares
         app.use(cors({ origin: '*' }));
         app.use(bodyParser.json());
+        
+        // Servir login.html
+        app.get('/login', (req, res) => {
+            res.sendFile(path.join(__dirname, 'public', 'login.html')); // Ajuste o caminho conforme sua estrutura
+        });
+
+        // Endpoint de login (POST)
+        app.post('/login', async (req, res) => {
+            const { email, senha } = req.body;
+
+            if (!email || !senha) {
+                return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+            }
+
+            try {
+                const connection = await db.promise().getConnection();
+                const [users] = await connection.execute(
+                    'SELECT * FROM usuarios WHERE email = ? AND senha = ?',
+                    [email, senha] // Em produção, use hash de senha com bcrypt
+                );
+                connection.release();
+
+                if (users.length === 0) {
+                    return res.status(401).json({ error: 'Credenciais inválidas' });
+                }
+
+                // Aqui, normalmente você usaria JWT ou sessão.
+                res.json({ message: 'Login bem-sucedido', redirectTo: '/admin' });
+            } catch (err) {
+                console.error('Erro ao fazer login:', err.message);
+                res.status(500).json({ error: 'Erro ao fazer login: ' + err.message });
+            }
+        });
+
+        // Rotas de cursos
+        app.use('/api/cursos', cursosRoutes);
 
         // Middleware para tratamento de erros
         app.use((err, req, res, next) => {
             console.error(err.stack);
             res.status(500).json({ message: 'Erro interno do servidor' });
         });
-
-        // Rotas
-        app.use('/api/cursos', cursosRoutes);
 
         // Middleware para rota não encontrada
         app.use((req, res, next) => {
@@ -47,5 +81,3 @@ db.connect((err) => {
         });
     }
 });
-
-
