@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api/cursos';
+const API_URL = 'http://localhost:3001/api/cursos';
 const form = document.getElementById('courseForm');
 const tableBody = document.getElementById('adminTable');
 let editingCourseId = null;
@@ -127,6 +127,13 @@ function renderCourses(courses) {
         tableBody.appendChild(row);
     });
 }
+
+// Função de logout
+document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('loggedIn'); // Remove a flag de login
+    window.location.href = 'login.html'; // Redireciona para a tela de login
+});
+
 
 
 

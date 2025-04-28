@@ -15,35 +15,6 @@ const dbConfig = {
 
 const pool = mysql.createPool(dbConfig);
 
-// Endpoint de login
-router.post('/login', async (req, res) => {
-  const { email, senha } = req.body;
-
-  if (!email || !senha) {
-    return res.status(400).json({ error: 'Email e senha são obrigatórios' });
-  }
-
-  try {
-    const connection = await db.promise().getConnection();
-    const [users] = await connection.execute(
-      'SELECT * FROM usuarios WHERE email = ? AND senha = ?',
-      [email, senha] // Em produção, use hash de senha com bcrypt
-    );
-    connection.release();
-
-    if (users.length === 0) {
-      return res.status(401).json({ error: 'Credenciais inválidas' });
-    }
-
-    res.json({ message: 'Login bem-sucedido', redirectTo: '/admin' });
-  } catch (err) {
-    console.error('Erro ao fazer login:', err.message);
-    res.status(500).json({ error: 'Erro ao fazer login: ' + err.message });
-  }
-});
-
-
-
 // 1. Obter todos os cursos
 router.get('/', async (req, res) => {
   try {
