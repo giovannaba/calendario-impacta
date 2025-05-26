@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const cursosRoutes = require('./routes/cursosRoutes');
 const loginRoutes = require('./routes/loginRoutes');
+const favoritosRoutes = require('./routes/favoritosRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -13,6 +14,7 @@ app.use(express.json()); // Em vez de body-parser
 // Rotas
 app.use('/api/cursos', cursosRoutes); // Cursos vão ser acessados em /api/cursos
 app.use('/', loginRoutes);             // Login vai ser acessado em /login
+app.use('/api/favoritos', favoritosRoutes); //favoritos
 
 // Middleware para tratamento de erros
 app.use((err, req, res, next) => {

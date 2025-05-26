@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api/cursos';
+const API_URL = 'http://localhost:3001/api/cursos';
 const searchInput = document.getElementById('searchInput');
 const filterUnit = document.getElementById('filterUnit');
 const tableBody = document.getElementById('courseTable');
